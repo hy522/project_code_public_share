@@ -19,7 +19,7 @@ class Agent(object):
         # Complications: pickle should work with any machine learning models
         # However, this does not work with custom defined classes, due to the way pickle operates
         # TODO you can replace this with your own model
-        self.filename = 'machine_learning_model/svm'
+        self.filename = 'machine_learning_model\logisticRegression'
         self.trained_model = pickle.load(open(self.filename, 'rb'))
         self.embedding = pd.read_csv('machine_learning_model/embedding')
         self.item0_embedding = self.openpickle('data/item0embedding')
@@ -71,7 +71,7 @@ class Agent(object):
             new_buyer_embedding = [np.nan]*10
             # self.embedding.loc[len(self.embedding.index)] = new_buyer_covariates + new_buyer_embedding
             self.embedding.loc[len(self.embedding.index)] = np.concatenate((new_buyer_covariates,new_buyer_embedding), axis = 0)
-            self.embedding[[0,1,2,3,4,5,6,7,8,9]] = self.knn_impute(target= self.embedding[[0,1,2,3,4,5,6,7,8,9]], attributes= self.embedding[['Covariate 1', 'Covariate 2','Covariate 3']],
+            self.embedding[['0','1','2','3','4','5','6','7','8','9']] = self.knn_impute(target= self.embedding[['0','1','2','3','4','5','6','7','8','9']], attributes= self.embedding[['Covariate 1', 'Covariate 2','Covariate 3']],
                                     aggregation_method="median", k_neighbors=18, numeric_distance='euclidean',
                                     categorical_distance='hamming', missing_neighbors_threshold=0.9)
             em = list(self.embedding.loc[len(self.embedding.index)-1])
