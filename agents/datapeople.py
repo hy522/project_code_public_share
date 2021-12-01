@@ -22,8 +22,8 @@ class Agent(object):
         self.filename = 'machine_learning_model/svm'
         self.trained_model = pickle.load(open(self.filename, 'rb'))
         self.embedding = pd.read_csv('machine_learning_model/embedding')
-        self.item0_embedding = openpickle('data/item0embedding')
-        self.item1_embedding = openpickle('data/item1embedding')
+        self.item0_embedding = self.openpickle('data/item0embedding')
+        self.item1_embedding = self.openpickle('data/item1embedding')
         self.alpha = 0.8
         
     def _process_last_sale(self, last_sale, profit_each_team):
@@ -81,7 +81,7 @@ class Agent(object):
         # TODO Currently this output is just a deterministic 2-d array, but the students are expected to use the buyer covariates to make a better prediction
         # and to use the history of prices from each team in order to create prices for each item.
     
-    def openpickle(filename):
+    def openpickle(self, filename):
         with open(filename, "rb") as readfile:
             loaded = pickle.load(readfile)
         return loaded
