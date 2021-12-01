@@ -22,8 +22,8 @@ class Agent(object):
         self.filename = 'machine_learning_model/svm'
         self.trained_model = pickle.load(open(self.filename, 'rb'))
         self.embedding = pd.read_csv('machine_learning_model/embedding')
-        self.item0_embedding = openpickle('machine_learning_model/item0embedding')
-        self.item1_embedding = openpickle('machine_learning_model/item1embedding')
+        self.item0_embedding = openpickle('data/item0embedding')
+        self.item1_embedding = openpickle('data/item1embedding')
         
     def _process_last_sale(self, last_sale, profit_each_team):
         # print("last_sale: ", last_sale)
