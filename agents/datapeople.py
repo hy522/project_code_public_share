@@ -72,7 +72,8 @@ class Agent(object):
             em = list(self.embedding.loc[len(self.embedding.index)-1])
             self.embedding.drop([len( self.embedding.index)-1],inplace = True)
         else:
-            em = new_buyer_covariates + new_buyer_embedding
+            # em = new_buyer_covariates + new_buyer_embedding
+            em = np.concatenate((new_buyer_covariates,new_buyer_embedding), axis = 0)
         emdf = pd.DataFrame([em], columns=['Covariate 1', 'Covariate 2','Covariate 3']+list(range(10)))
         emdf['uv0'] = emdf[list(range(10))].dot(self.item0_embedding)
         emdf['uv1'] = emdf[list(range(10))].dot(self.item1_embedding)
