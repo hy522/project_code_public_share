@@ -24,6 +24,7 @@ class Agent(object):
         self.embedding = pd.read_csv('machine_learning_model/embedding')
         self.item0_embedding = openpickle('data/item0embedding')
         self.item1_embedding = openpickle('data/item1embedding')
+        self.alpha = 0.8
         
     def _process_last_sale(self, last_sale, profit_each_team):
         # print("last_sale: ", last_sale)
@@ -49,7 +50,11 @@ class Agent(object):
         # print("Which item customer bought: ", which_item_customer_bought)
 
         # TODO - add your code here to potentially update your pricing strategy based on what happened in the last round
-        pass
+        if did_customer_buy_from_opponent:  # can increase prices
+            smaller = opponent_last_prices / my_last_prices
+            alpha_others =  self.alpha * smaller
+            alpha_ours =  self.alpha - 0.2
+            self.alpha  = min(alpha_others, alpha_ours)
 
     # Given an observation which is #info for new buyer, information for last iteration, and current profit from each time
     # Covariates of the current buyer, and potentially embedding. Embedding may be None
