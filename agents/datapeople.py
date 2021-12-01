@@ -65,7 +65,8 @@ class Agent(object):
         self._process_last_sale(last_sale, profit_each_team)
         if new_buyer_embedding is None:
             new_buyer_embedding = [np.nan]*10
-            self.embedding.loc[len(self.embedding.index)] = new_buyer_covariates+new_buyer_embedding
+            # self.embedding.loc[len(self.embedding.index)] = new_buyer_covariates + new_buyer_embedding
+            self.embedding.loc[len(self.embedding.index)] = np.concatenate((new_buyer_covariates,new_buyer_embedding), axis = 0)
             self.embedding[[0,1,2,3,4,5,6,7,8,9]] = knn_impute(target= self.embedding[[0,1,2,3,4,5,6,7,8,9]], attributes= self.embedding[['Covariate 1', 'Covariate 2','Covariate 3']],
                                     aggregation_method="median", k_neighbors=K, numeric_distance='euclidean',
                                     categorical_distance='hamming', missing_neighbors_threshold=0.9)
