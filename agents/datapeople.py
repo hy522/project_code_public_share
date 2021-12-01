@@ -19,7 +19,7 @@ class Agent(object):
         # Complications: pickle should work with any machine learning models
         # However, this does not work with custom defined classes, due to the way pickle operates
         # TODO you can replace this with your own model
-        self.filename = 'machine_learning_model\logisticRegression'
+        self.filename = 'machine_learning_model/logisticRegression'
         self.trained_model = pickle.load(open(self.filename, 'rb'))
         self.embedding = pd.read_csv('machine_learning_model/embedding')
         self.item0_embedding = self.openpickle('data/item0embedding')
