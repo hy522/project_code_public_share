@@ -95,18 +95,18 @@ class Agent(object):
         revenue = 0
         pre_revenue = -1000
         while abs(revenue - pre_revenue) > 0.01:
-        max_p0 = min_price0
-        max_p1 = min_price1
-        pre_revenue = revenue
-        for p0 in np.arange(min_price0, max_price0, step0):
-          for p1 in np.arange(min_price1, max_price1, step1):
-            arrayWithPrice = np.insert(original_array,-2,[p0,p1],axis=0)
-            arrayWithPrice = np.expand_dims(arrayWithPrice, axis=0)
-            temp = model.predict_proba(arrayWithPrice)[0][1] * p0 + model.predict_proba(arrayWithPrice)[0][2] * p1
-            if temp > revenue:
-              max_p0 = p0
-              max_p1 = p1
-              revenue = temp
+            max_p0 = min_price0
+            max_p1 = min_price1
+            pre_revenue = revenue
+            for p0 in np.arange(min_price0, max_price0, step0):
+                for p1 in np.arange(min_price1, max_price1, step1):
+                    arrayWithPrice = np.insert(original_array,-2,[p0,p1],axis=0)
+                    arrayWithPrice = np.expand_dims(arrayWithPrice, axis=0)
+                    temp = model.predict_proba(arrayWithPrice)[0][1] * p0 + model.predict_proba(arrayWithPrice)[0][2] * p1
+                    if temp > revenue:
+                        max_p0 = p0
+                        max_p1 = p1
+                        revenue = temp
 
 
         max_price0 = max_p0 + step0
