@@ -65,14 +65,14 @@ class Agent(object):
         self._process_last_sale(last_sale, profit_each_team)
         print(new_buyer_covariates)
         print(new_buyer_embedding)
-        print(type(new_buyer_embedding)))
+        print(type(new_buyer_embedding))
         
         if new_buyer_embedding is None:
             new_buyer_embedding = [np.nan]*10
             # self.embedding.loc[len(self.embedding.index)] = new_buyer_covariates + new_buyer_embedding
             self.embedding.loc[len(self.embedding.index)] = np.concatenate((new_buyer_covariates,new_buyer_embedding), axis = 0)
-            self.embedding[[0,1,2,3,4,5,6,7,8,9]] = knn_impute(target= self.embedding[[0,1,2,3,4,5,6,7,8,9]], attributes= self.embedding[['Covariate 1', 'Covariate 2','Covariate 3']],
-                                    aggregation_method="median", k_neighbors=K, numeric_distance='euclidean',
+            self.embedding[[0,1,2,3,4,5,6,7,8,9]] = self.knn_impute(target= self.embedding[[0,1,2,3,4,5,6,7,8,9]], attributes= self.embedding[['Covariate 1', 'Covariate 2','Covariate 3']],
+                                    aggregation_method="median", k_neighbors=18, numeric_distance='euclidean',
                                     categorical_distance='hamming', missing_neighbors_threshold=0.9)
             em = list(self.embedding.loc[len(self.embedding.index)-1])
             self.embedding.drop([len( self.embedding.index)-1],inplace = True)
@@ -82,7 +82,7 @@ class Agent(object):
         emdf = pd.DataFrame([em], columns=['Covariate 1', 'Covariate 2','Covariate 3']+list(range(10)))
         emdf['uv0'] = emdf[list(range(10))].dot(self.item0_embedding)
         emdf['uv1'] = emdf[list(range(10))].dot(self.item1_embedding)
-        p0,p1,r = predictPrice(self.trained_model, np.array(emdf)[0])
+        p0,p1,r = self.predictPrice(self.trained_model, np.array(emdf)[0])
         return [p0*self.alpha, p1*self.alpha]
         # TODO Currently this output is just a deterministic 2-d array, but the students are expected to use the buyer covariates to make a better prediction
         # and to use the history of prices from each team in order to create prices for each item.
@@ -92,7 +92,7 @@ class Agent(object):
             loaded = pickle.load(readfile)
         return loaded
 
-    def predictPrice(model, original_array):
+    def predictPrice(self, model, original_array):
         #item0: largest price 2.22; least price 0
         #item1: largest price 4; least price 0
         max_price0 = 3
@@ -126,7 +126,7 @@ class Agent(object):
         step1 = (max_price1 - min_price1) / 10
         return max_p0, max_p1, revenue
     
-    def weighted_hamming(data):
+    def weighted_hamming(self, data):
         """ Compute weighted hamming distance on categorical variables. For one variable, it is equal to 1 if
             the values between point A and point B are different, else it is equal the relative frequency of the
             distribution of the value across the variable. For multiple variables, the harmonic mean is computed
@@ -149,7 +149,7 @@ class Agent(object):
         return distances
 
 
-    def distance_matrix(data, numeric_distance = "euclidean", categorical_distance = "jaccard"):
+    def distance_matrix(self, data, numeric_distance = "euclidean", categorical_distance = "jaccard"):
         """ Compute the pairwise distance attribute by attribute in order to account for different variables type:
             - Continuous
             - Categorical
@@ -228,13 +228,13 @@ class Agent(object):
             result_matrix = cdist(data, data, metric=numeric_distance)
         elif is_all_categorical:
             if categorical_distance == "weighted-hamming":
-                result_matrix = weighted_hamming(data)
+                result_matrix = self.weighted_hamming(data)
             else:
                 result_matrix = cdist(data, data, metric=categorical_distance)
         else:
             result_numeric = cdist(data_numeric, data_numeric, metric=numeric_distance)
             if categorical_distance == "weighted-hamming":
-                result_categorical = weighted_hamming(data_categorical)
+                result_categorical = self.weighted_hamming(data_categorical)
             else:
                 result_categorical = cdist(data_categorical, data_categorical, metric=categorical_distance)
             result_matrix = np.array([[1.0*(result_numeric[i, j] * number_of_numeric_var + result_categorical[i, j] *
@@ -246,7 +246,7 @@ class Agent(object):
         return pd.DataFrame(result_matrix)
 
 
-    def knn_impute(target, attributes, k_neighbors, aggregation_method="mean", numeric_distance="euclidean",
+    def knn_impute(self, target, attributes, k_neighbors, aggregation_method="mean", numeric_distance="euclidean",
                    categorical_distance="jaccard", missing_neighbors_threshold = 0.5):
         """ Replace the missing values within the target variable based on its k nearest neighbors identified with the
             attributes variables. If more than 50% of its neighbors are also missing values, the value is not modified and
@@ -300,7 +300,7 @@ class Agent(object):
         attributes = pd.DataFrame(attributes)
 
         # Get the distance matrix and check whether no error was triggered when computing it
-        distances = distance_matrix(attributes, numeric_distance, categorical_distance)
+        distances = self.distance_matrix(attributes, numeric_distance, categorical_distance)
         if distances is None:
             return None
 
