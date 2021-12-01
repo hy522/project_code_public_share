@@ -63,9 +63,9 @@ class Agent(object):
     def action(self, obs):
         new_buyer_covariates, new_buyer_embedding, last_sale, profit_each_team = obs
         self._process_last_sale(last_sale, profit_each_team)
-        print(new_buyer_covariates)
-        print(new_buyer_embedding)
-        print(type(new_buyer_embedding))
+        # print(new_buyer_covariates)
+        # print(new_buyer_embedding)
+        # print(type(new_buyer_embedding))
         
         if new_buyer_embedding is None:
             new_buyer_embedding = [np.nan]*10
