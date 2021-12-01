@@ -81,7 +81,10 @@ class Agent(object):
         # TODO Currently this output is just a deterministic 2-d array, but the students are expected to use the buyer covariates to make a better prediction
         # and to use the history of prices from each team in order to create prices for each item.
     
-
+    def openpickle(filename):
+        with open(filename, "rb") as readfile:
+            loaded = pickle.load(readfile)
+        return loaded
 
     def predictPrice(model, original_array):
         #item0: largest price 2.22; least price 0
