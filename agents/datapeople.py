@@ -114,7 +114,10 @@ class Agent(object):
                     arrayWithPrice = np.insert(original_array,-2,[p0,p1],axis=0)
                     arrayWithPrice = np.expand_dims(arrayWithPrice, axis=0)
                     print("probabilities:",model.predict_proba(arrayWithPrice)[0][1],model.predict_proba(arrayWithPrice)[0][2])
+                    print("p0p1:",p0,p1)
+                    
                     temp = model.predict_proba(arrayWithPrice)[0][1] * p0 + model.predict_proba(arrayWithPrice)[0][2] * p1
+                    print("temp:",temp)
                     if temp > revenue:
                         max_p0 = p0
                         max_p1 = p1
