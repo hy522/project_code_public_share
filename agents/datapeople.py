@@ -51,9 +51,9 @@ class Agent(object):
 
         # TODO - add your code here to potentially update your pricing strategy based on what happened in the last round
         if did_customer_buy_from_opponent:  # can increase prices
-            smaller = opponent_last_prices / my_last_prices
-            alpha_others =  self.alpha * smaller
-            alpha_ours =  self.alpha - 0.2
+            smaller = min(opponent_last_prices[0] / my_last_prices[0],opponent_last_prices[1] / my_last_prices[1])
+            alpha_others =  smaller - 0.1
+            alpha_ours =  self.alpha * 0.9
             self.alpha  = min(alpha_others, alpha_ours)
 
     # Given an observation which is #info for new buyer, information for last iteration, and current profit from each time
