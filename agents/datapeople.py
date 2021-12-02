@@ -52,8 +52,8 @@ class Agent(object):
         # TODO - add your code here to potentially update your pricing strategy based on what happened in the last round
         if did_customer_buy_from_opponent:  # can increase prices
             smaller = min(opponent_last_prices[0] / my_last_prices[0],opponent_last_prices[1] / my_last_prices[1])
-            alpha_others =  smaller - 0.1
-            alpha_ours =  self.alpha * 0.9
+            alpha_others =  smaller - 0.09
+            alpha_ours =  self.alpha * 0.99
             self.alpha  = min(alpha_others, alpha_ours)
 
     # Given an observation which is #info for new buyer, information for last iteration, and current profit from each time
@@ -83,7 +83,7 @@ class Agent(object):
         emdf['uv0'] = emdf[list(range(10))].dot(self.item0_embedding)
         emdf['uv1'] = emdf[list(range(10))].dot(self.item1_embedding)
         p0,p1,r = self.predictPrice(self.trained_model, np.array(emdf)[0])
-        return [p0, p1]
+        return [p0*self.alpha, p1*self.alpha]
         # TODO Currently this output is just a deterministic 2-d array, but the students are expected to use the buyer covariates to make a better prediction
         # and to use the history of prices from each team in order to create prices for each item.
     
