@@ -82,9 +82,9 @@ class Agent(object):
         emdf = pd.DataFrame([em], columns=['Covariate 1', 'Covariate 2','Covariate 3']+list(range(10)))
         emdf['uv0'] = emdf[list(range(10))].dot(self.item0_embedding)
         emdf['uv1'] = emdf[list(range(10))].dot(self.item1_embedding)
-        print("emdf:",emdf)
+#         print("emdf:",emdf)
         p0,p1,r = self.predictPrice(self.trained_model, np.array(emdf)[0])
-        print("price:",p0,p1)
+#         print("price:",p0,p1)
         return [p0*self.alpha, p1*self.alpha]
         # TODO Currently this output is just a deterministic 2-d array, but the students are expected to use the buyer covariates to make a better prediction
         # and to use the history of prices from each team in order to create prices for each item.
@@ -113,26 +113,26 @@ class Agent(object):
                 for p1 in np.arange(min_price1, max_price1, step1):
                     arrayWithPrice = np.insert(original_array,-2,[p0,p1],axis=0)
                     arrayWithPrice = np.expand_dims(arrayWithPrice, axis=0)
-                    print("probabilities:",model.predict_proba(arrayWithPrice)[0][1],model.predict_proba(arrayWithPrice)[0][2])
-                    print("p0p1:",p0,p1)
+#                     print("probabilities:",model.predict_proba(arrayWithPrice)[0][1],model.predict_proba(arrayWithPrice)[0][2])
+#                     print("p0p1:",p0,p1)
                     
                     temp = model.predict_proba(arrayWithPrice)[0][1] * p0 + model.predict_proba(arrayWithPrice)[0][2] * p1
-                    print("temp:",temp,revenue,temp > revenue)
+#                     print("temp:",temp,revenue,temp > revenue)
                     if temp > revenue:
                         max_p0 = p0
-                        print("max_p0 = p0",max_p0,p0)
+#                         print("max_p0 = p0",max_p0,p0)
                         max_p1 = p1
-                        print("max_p1 = p1",max_p1,p1)
+#                         print("max_p1 = p1",max_p1,p1)
                         revenue = temp
-                        print(" revenue = temp", revenue,temp)
+#                         print(" revenue = temp", revenue,temp)
 
 
-        max_price0 = max_p0 + step0
-        min_price0 = max_p0
-        max_price1 = max_p1 + step1
-        min_price1 = max_p1
-        step0 = (max_price0 - min_price0) / 10
-        step1 = (max_price1 - min_price1) / 10
+            max_price0 = max_p0 + step0
+            min_price0 = max_p0
+            max_price1 = max_p1 + step1
+            min_price1 = max_p1
+            step0 = (max_price0 - min_price0) / 10
+            step1 = (max_price1 - min_price1) / 10
         return max_p0, max_p1, revenue
     
     def weighted_hamming(self, data):
