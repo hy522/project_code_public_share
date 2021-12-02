@@ -120,8 +120,11 @@ class Agent(object):
                     print("temp:",temp)
                     if temp > revenue:
                         max_p0 = p0
+                        print("max_p0 = p0",max_p0,p0)
                         max_p1 = p1
+                        print("max_p1 = p1",max_p1,p1)
                         revenue = temp
+                        print(" revenue = temp", revenue,temp)
 
 
         max_price0 = max_p0 + step0
