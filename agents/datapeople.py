@@ -117,7 +117,7 @@ class Agent(object):
                     print("p0p1:",p0,p1)
                     
                     temp = model.predict_proba(arrayWithPrice)[0][1] * p0 + model.predict_proba(arrayWithPrice)[0][2] * p1
-                    print("temp:",temp)
+                    print("temp:",temp,revenue,temp > revenue)
                     if temp > revenue:
                         max_p0 = p0
                         print("max_p0 = p0",max_p0,p0)
