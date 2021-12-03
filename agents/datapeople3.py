@@ -54,7 +54,7 @@ class Agent(object):
             alpha_ours =  self.alpha * 0.99
             self.alpha  = alpha_ours
         else:
-            alpha_ours =  self.alpha * 1.05
+            alpha_ours =  self.alpha * 1.01
             self.alpha  = alpha_ours
 
 
