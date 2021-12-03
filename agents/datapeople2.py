@@ -24,7 +24,7 @@ class Agent(object):
         self.embedding = pd.read_csv('machine_learning_model/embedding')
         self.item0_embedding = self.openpickle('data/item0embedding')
         self.item1_embedding = self.openpickle('data/item1embedding')
-        self.alpha = 0.8
+        self.alpha = 0.9
         
     def _process_last_sale(self, last_sale, profit_each_team):
         # print("last_sale: ", last_sale)
