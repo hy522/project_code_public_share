@@ -24,7 +24,7 @@ class Agent(object):
         self.embedding = pd.read_csv('machine_learning_model/embedding')
         self.item0_embedding = self.openpickle('data/item0embedding')
         self.item1_embedding = self.openpickle('data/item1embedding')
-        self.alpha = 0.8
+        self.alpha = 1
         
     def _process_last_sale(self, last_sale, profit_each_team):
         # print("last_sale: ", last_sale)
@@ -51,10 +51,10 @@ class Agent(object):
 
         # TODO - add your code here to potentially update your pricing strategy based on what happened in the last round
         if did_customer_buy_from_opponent:  # can increase prices
-            alpha_ours =  self.alpha * 0.99
+            alpha_ours =  self.alpha * 0.98
             self.alpha  = alpha_ours
         else:
-            alpha_ours =  self.alpha * 1.01
+            alpha_ours =  self.alpha * 1.02
             self.alpha  = alpha_ours
 
 
