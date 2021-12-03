@@ -51,7 +51,7 @@ class Agent(object):
 
         # TODO - add your code here to potentially update your pricing strategy based on what happened in the last round
         if did_customer_buy_from_opponent:  # can increase prices
-            alpha_ours =  self.alpha * 0.95
+            alpha_ours =  self.alpha * 0.99
             self.alpha  = alpha_ours
         else:
             alpha_ours =  self.alpha * 1.05
